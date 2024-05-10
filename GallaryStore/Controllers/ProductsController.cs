@@ -53,9 +53,9 @@ namespace GallaryStore.Controllers
         {
             if(ModelState.IsValid)
             {
-                if (id == null || product == null || id == 0 || id != product.id)
+                if (id == null ||  id == 0 || id != product.id)
                 {
-                    return BadRequest(ModelState);
+                    return BadRequest();
                 }
                 else
                 {

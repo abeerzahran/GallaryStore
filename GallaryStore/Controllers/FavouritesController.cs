@@ -92,7 +92,7 @@ namespace GallaryStore.Controllers
         [HttpDelete]
         public ActionResult Delete(FavouriteDTO favourite)
         {
-            if(!ModelState.IsValid)
+            if(ModelState.IsValid)
             {
 
                 FavouriteDTO? Favourite = FavouriteService.GetById(favourite.productId, favourite.userId, null);

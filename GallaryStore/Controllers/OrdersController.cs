@@ -51,7 +51,7 @@ namespace GallaryStore.Controllers
         [HttpPut("{id}")]
         public ActionResult Update(int id, OrderDTO Order)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (id == null || id == 0 || id != Order.id)
                 {
@@ -76,7 +76,7 @@ namespace GallaryStore.Controllers
         [HttpPost]
         public ActionResult Add(AddOrderDTO order)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 try

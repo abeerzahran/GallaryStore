@@ -50,7 +50,7 @@ namespace GallaryStore.Controllers
         [HttpPut]
         public ActionResult Update(OrderProductsDTO OrderProduct)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 try
@@ -70,7 +70,7 @@ namespace GallaryStore.Controllers
         [HttpPost]
         public ActionResult Add(OrderProductsDTO OrderProduct)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 try
@@ -91,7 +91,7 @@ namespace GallaryStore.Controllers
         [HttpDelete]
         public ActionResult Delete(OrderProductsDTO orderProducts)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 try
