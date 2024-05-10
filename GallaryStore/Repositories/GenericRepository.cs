@@ -35,11 +35,11 @@ namespace GallaryStore.Repositories
         {
             if(include == null)
             {
-                return db.Set<T>().Where(func).FirstOrDefault();
+                return db.Set<T>().FirstOrDefault(func);
             }
             else
             {
-                return db.Set<T>().Include(include).Where(func).FirstOrDefault();
+                return db.Set<T>().Include(include).FirstOrDefault(func);
             }
         }
 

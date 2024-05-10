@@ -9,19 +9,19 @@ namespace GallaryStore.DTOs
         {
             
         }
-        public OrderProductsDTO(int orderId, int productId, int? quantity, decimal? subtotal)
+        public OrderProductsDTO(int orderId, int productId, int? quantity)
         {
             this.orderId = orderId;
             this.productId = productId;
             this.quantity = quantity;
-            this.subtotal = subtotal;
+            
             
         }
         
         public int orderId { get; set; }
         public int productId { get; set; }
         public int? quantity { get; set; }
-        public decimal? subtotal { get; set; }
+        
 
        
     }
