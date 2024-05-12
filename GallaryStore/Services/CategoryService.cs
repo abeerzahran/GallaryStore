@@ -1,4 +1,5 @@
 ﻿using GallaryStore.DTOs.category;
+using GallaryStore.DTOs.product;
 using GallaryStore.Models;
 using GallaryStore.UnitOfWork;
 
@@ -52,6 +53,19 @@ namespace GallaryStore.Services
             };
             unit.Repository.add(p);
             unit.savechanges();
+        }
+        public List<ProductDTO> getCategoryProducts(int categoryId)
+        {
+            var products = unit.Repository.getElement(c => c.id == categoryId, "products").products;
+
+            List<ProductDTO> productDTOs= new List<ProductDTO>();
+            foreach (var item in products)
+            {
+                ProductDTO product = new ProductDTO(item.id, item.name, item.description, item.price, item.quantity, item.rate, item.img, item.categoryID);
+                productDTOs.Add(product);
+            }
+            return productDTOs;
+
         }
     }
 }
