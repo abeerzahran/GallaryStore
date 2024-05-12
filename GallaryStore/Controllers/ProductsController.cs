@@ -102,10 +102,34 @@ namespace GallaryStore.Controllers
             ProductDTO? product = productService.GetById(id);
             if (product != null)
             {
+                try
+                {
+                    productService.Delete(id);
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
                 return Ok(product);
             }
             return NotFound();
             
+        }
+
+        [HttpGet]
+        [Route("productPage")]
+        public ActionResult Get([FromQuery] string searchTerm = "", [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                List<ProductDTO> productsDTO = productService.getProductPage(searchTerm, page, pageSize);
+                return Ok(productsDTO);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+           
         }
 
     }

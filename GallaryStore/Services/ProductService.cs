@@ -28,19 +28,17 @@ namespace GallaryStore.Services
         public void Update(ProductDTO product)
         {
             Product product1 = unit.Repository.GetById(product.id);
-            Product p = new Product()
-            {
-                id= product.id,
-                name= product.name,
-                description= product.description,
-                price= product.price,
-                quantity= product.quantity,
-                rate= product.rate,
-                img=(product.img!=null)?product.img : product1.img ,
-                categoryID= product.categoryID,
-              
-            };
-            unit.Repository.update(p);
+            
+            product1.name = product.name;
+            product1.description = product.description;
+            product1.price = product.price;
+            product1.quantity = product.quantity;
+            product1.rate = product.rate;
+            product1.img = (product.img != null) ? product.img : product1.img;
+            product1.categoryID = product.categoryID;
+
+            
+            unit.Repository.update(product1);
             unit.savechanges();
         }
         public void Delete(int id)
@@ -65,6 +63,33 @@ namespace GallaryStore.Services
             };
             unit.Repository.add(p);
             unit.savechanges();
+        }
+
+        public List<ProductDTO> getProductPage(string searchTerm,int pageNum  ,int pageSize)
+        {
+            var products = unit.Repository.getElements(p => p.name == null ? " ".Contains(searchTerm) : p.name.Contains(searchTerm),null).ToList();
+            List<ProductDTO> productsDTO = new List<ProductDTO>();
+            foreach (var product in products)
+            {
+                ProductDTO prodDTO = new ProductDTO()
+                {
+                    id= product.id,
+                    name = product.name,
+                    description = product.description,
+                    price = product.price,
+                    quantity = product.quantity,
+                    rate = product.rate,
+                    img= product.img,
+                    categoryID = product.categoryID,
+
+                };
+                
+                productsDTO.Add(prodDTO);
+            }
+            var totalCount = productsDTO.Count();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            productsDTO = productsDTO.Skip((pageNum - 1) * pageSize).Take(pageSize).ToList();
+            return productsDTO;
         }
         
     }

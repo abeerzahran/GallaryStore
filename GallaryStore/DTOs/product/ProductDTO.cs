@@ -27,7 +27,7 @@ namespace GallaryStore.DTOs.product
         public decimal price { get; set; }
         public int quantity { get; set; }
         public double rate { get; set; }
-        public string img { get; set; }
+        public string? img { get; set; }
         public int categoryID { get; set; }
 
     }
