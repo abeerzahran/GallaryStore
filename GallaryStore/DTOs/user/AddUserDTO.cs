@@ -5,7 +5,7 @@ namespace GallaryStore.DTOs.user
 {
     public class AddUserDTO
     {
-        public AddUserDTO(string UserName, string Email, string Password, string PhoneNumber,string address)
+        public AddUserDTO(string UserName, string Email, string Password, string PhoneNumber,string address,string confirmedPassword)
         {
             
             this.UserName = UserName;
@@ -13,6 +13,7 @@ namespace GallaryStore.DTOs.user
             this.Password = Password;
             this.PhoneNumber = PhoneNumber;
             this.Address=address;
+            this.ConfirmedPassword=confirmedPassword;
 
         }
 

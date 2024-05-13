@@ -46,15 +46,20 @@ namespace GallaryStore.Controllers
                 IdentityResult result = await userManager.CreateAsync(user, user.PasswordHash);
                 if (result.Succeeded)
                 {
-                    IdentityResult identityResult= await userManager.AddToRoleAsync(user, "user");
-                    if(!identityResult.Succeeded) {
+                   
                         if (await roleManager.FindByNameAsync("user") == null)
                         {
                             await roleManager.CreateAsync(new IdentityRole() { Name = "user" });
                         }
                         else
-                            BadRequest();
-                    }
+                            return BadRequest();
+                        IdentityResult identityResult = await userManager.AddToRoleAsync(user, "user");
+                        if (!identityResult.Succeeded)
+                        {
+                            return BadRequest();
+                        }
+
+                    
                     //create cookies and login
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return Created();
