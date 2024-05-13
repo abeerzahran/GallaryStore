@@ -104,5 +104,23 @@ namespace GallaryStore.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("categoryProducts/{id}")]
+        public ActionResult getCategoryProducts(int id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            CategoryDTO? category = categoryService.GetById(id);
+            if (category != null)
+            {
+                return Ok(categoryService.getCategoryProducts(id));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GallaryStore.DTOs;
+using GallaryStore.DTOs.orderProducts;
 using GallaryStore.Models;
 using GallaryStore.Services;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,7 @@ namespace GallaryStore.Controllers
         [HttpGet]
         public ActionResult getAll()
         {
-            List<OrderProductsDTO>? OrderProducts = OrderProductService.GetAll();
+            List<getOrderProductsDTO>? OrderProducts = OrderProductService.GetAll();
 
             if (OrderProducts != null)
             {
@@ -36,7 +37,7 @@ namespace GallaryStore.Controllers
             {
                 return BadRequest();
             }
-            List<OrderProductsDTO>? OrderProduct = OrderProductService.GetById(orderID, "product");
+            List<getOrderProductsDTO>? OrderProduct = OrderProductService.GetById(orderID, "product");
             if (OrderProduct != null)
             {
                 return Ok(OrderProduct);
@@ -89,7 +90,7 @@ namespace GallaryStore.Controllers
             
         }
         [HttpDelete]
-        public ActionResult Delete(OrderProductsDTO orderProducts)
+        public ActionResult Delete(getOrderProductsDTO orderProducts)
         {
             if (ModelState.IsValid)
             {

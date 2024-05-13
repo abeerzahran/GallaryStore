@@ -80,7 +80,7 @@ namespace GallaryStore.Controllers
         {
             if (ModelState.IsValid == true)
             {
-                ApplicationUser? user = await userManager.FindByNameAsync(login.userName);
+                ApplicationUser? user = await userManager.FindByEmailAsync(login.Email);
                 if (user == null)
                 {
                     return NotFound();
