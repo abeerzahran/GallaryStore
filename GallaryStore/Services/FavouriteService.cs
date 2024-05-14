@@ -24,6 +24,11 @@ namespace GallaryStore.Services
             return new FavouriteDTO(p.userId,p.productId);
         }
 
+        public List< Favourite> GetByUserId(string userId, string include)
+        {
+            return unit.Repository.getElements(p => p.userId == userId, include);
+        }
+
         public void Update(FavouriteDTO Favourite)
         {
             Favourite p = new Favourite()
