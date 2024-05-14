@@ -1,5 +1,6 @@
 ﻿using GallaryStore.DTOs;
 using GallaryStore.DTOs.order;
+using GallaryStore.DTOs.orderProducts;
 using GallaryStore.Models;
 using GallaryStore.UnitOfWork;
 
@@ -8,9 +9,11 @@ namespace GallaryStore.Services
     public class OrderService
     {
         public unitOfWork<Order> unit;
-        public OrderService(unitOfWork<Order> unit)
+        public OrderProductsService orderProductsService;
+        public OrderService(unitOfWork<Order> unit, OrderProductsService orderProductsService)
         {
             this.unit = unit;
+            this.orderProductsService = orderProductsService;
         }
 
         public List<OrderDTO> GetAll()
@@ -48,11 +51,12 @@ namespace GallaryStore.Services
         }
         public void Add(AddOrderDTO Order)
         {
+
             Order p = new Order()
             {
                 id = 0,
                 checkOutDate = Order.checkOutDate,
-                totalPrice = Order.totalPrice,
+                totalPrice = 0,
                 quantity = Order.quantity,
                 status = Order.status,
                 userId = Order.userId,
@@ -60,6 +64,15 @@ namespace GallaryStore.Services
             };
             unit.Repository.add(p);
             unit.savechanges();
+        }
+
+        public CartDTO getCart(string userId )
+        {
+            
+           Order cart= unit.Repository.getElement(c => c.userId == userId && c.status == 'c', null);
+            List<getOrderProductsDTO> OrderProductsDTO = orderProductsService.GetById(cart.id, null);
+            CartDTO cartDTO= new CartDTO(cart.id,cart.checkOutDate,cart.totalPrice,cart.quantity,cart.status,cart.userId, OrderProductsDTO);
+            return cartDTO;
         }
     }
 }
