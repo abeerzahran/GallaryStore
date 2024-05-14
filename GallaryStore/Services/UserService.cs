@@ -59,5 +59,7 @@ namespace GallaryStore.Services
             unit.Repository.add(p);
             unit.savechanges();
         }
+
+       
     }
 }

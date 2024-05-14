@@ -1,6 +1,7 @@
 ﻿using GallaryStore.DTOs;
 using GallaryStore.DTOs.user;
 using GallaryStore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -92,9 +93,11 @@ namespace GallaryStore.Controllers
                     {
                         List<Claim> userclaims = new List<Claim>()
                         {
+                            new Claim("userId",user.Id),
                             new Claim("userName",user.UserName),
                             new Claim("phone",user.PhoneNumber),
-                            new Claim ("email",user.Email),
+                            new Claim("email",user.Email),
+                            new Claim("password",login.Password),
                             new Claim("address",user.address)
                         };
                         string key = "welcome to my secret world abeer adel zahran";
@@ -181,6 +184,13 @@ namespace GallaryStore.Controllers
             }
             
             return BadRequest(ModelState);
+        }
+        [HttpGet("getLoggedinUser")]
+        [Authorize]
+        public async Task<ActionResult> getloginedUser()
+        {
+            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            return Ok(id);
         }
 
 

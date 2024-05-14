@@ -2,6 +2,7 @@
 using GallaryStore.DTOs.order;
 using GallaryStore.Models;
 using GallaryStore.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -111,6 +112,15 @@ namespace GallaryStore.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpGet("cart")]
+        [Authorize]
+        public ActionResult getCart()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            
+            return Ok(orderService.getCart(userId));
         }
     }
 }
