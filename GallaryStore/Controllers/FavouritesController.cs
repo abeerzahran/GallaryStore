@@ -1,4 +1,5 @@
 ﻿using GallaryStore.DTOs;
+using GallaryStore.Models;
 using GallaryStore.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,8 @@ namespace GallaryStore.Controllers
                 return NotFound();
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("getById")]
         public ActionResult getById(string userId,int productId)
         {
             if (productId == null)
@@ -38,6 +40,26 @@ namespace GallaryStore.Controllers
             if (Favourite != null)
             {
                 return Ok(Favourite);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+        [HttpGet]
+        [Route("getByUserId")]
+        public ActionResult getByUserId(string userId)
+        {
+            if (userId == null)
+            {
+                return BadRequest();
+            }
+            List<Favourite> favourites = FavouriteService.GetByUserId(User.Claims.FirstOrDefault(user=>user.Type=="userId").Value, "product");
+            if (favourites != null)
+            {
+                return Ok(favourites);
             }
             else
             {
