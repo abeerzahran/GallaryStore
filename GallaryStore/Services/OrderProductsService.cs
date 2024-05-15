@@ -28,7 +28,7 @@ namespace GallaryStore.Services
             
         }
 
-        public void Update(OrderProductsDTO OrderProducts)
+        public getOrderProductsDTO Update(OrderProductsDTO OrderProducts)
         {
             Product product = unitProduct.Repository.GetById(OrderProducts.productId);
 
@@ -37,13 +37,18 @@ namespace GallaryStore.Services
                 orderId= OrderProducts.orderId,
                 productId= OrderProducts.productId,
                 quantity= OrderProducts.quantity,
-                subtotal= product.price * OrderProducts.quantity,
-                
-                
-
+                subtotal= product.price * OrderProducts.quantity
+            };
+            getOrderProductsDTO orderProduct = new getOrderProductsDTO()
+            {
+                orderId = p.orderId,
+                productId = p.productId,
+                quantity = p.quantity,
+                subTotal=p.subtotal
             };
             unit.Repository.update(p);
             unit.savechanges();
+            return orderProduct;
         }
         public void Delete(getOrderProductsDTO orderProducts)
         {

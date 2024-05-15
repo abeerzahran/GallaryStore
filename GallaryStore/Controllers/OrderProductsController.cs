@@ -56,8 +56,8 @@ namespace GallaryStore.Controllers
 
                 try
                 {
-                    OrderProductService.Update(OrderProduct);
-                    return Ok(OrderProduct);
+                    var orderProduct=OrderProductService.Update(OrderProduct);
+                    return Ok(orderProduct);
                 }
                 catch (Exception ex)
                 {
