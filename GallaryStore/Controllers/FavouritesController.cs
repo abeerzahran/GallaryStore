@@ -1,6 +1,8 @@
 ﻿using GallaryStore.DTOs;
+using GallaryStore.DTOs.product;
 using GallaryStore.Models;
 using GallaryStore.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GallaryStore.Controllers
@@ -50,13 +52,10 @@ namespace GallaryStore.Controllers
 
         [HttpGet]
         [Route("getByUserId")]
-        public ActionResult getByUserId(string userId)
+        [Authorize]
+        public ActionResult getByUserId()
         {
-            if (userId == null)
-            {
-                return BadRequest();
-            }
-            List<Favourite> favourites = FavouriteService.GetByUserId(User.Claims.FirstOrDefault(user=>user.Type=="userId").Value, "product");
+            List<ProductDTO> favourites = FavouriteService.GetByUserId(User.Claims.FirstOrDefault(user=>user.Type=="userId").Value, "product");
             if (favourites != null)
             {
                 return Ok(favourites);
