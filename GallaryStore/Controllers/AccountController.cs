@@ -193,6 +193,7 @@ namespace GallaryStore.Controllers
             return Ok(id);
         }
 
+        
 
     }
 }
