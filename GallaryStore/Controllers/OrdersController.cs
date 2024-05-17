@@ -75,6 +75,7 @@ namespace GallaryStore.Controllers
             
         }
         [HttpPost]
+        [Authorize]
         public ActionResult Add(AddOrderDTO order)
         {
             if (ModelState.IsValid)
@@ -82,8 +83,9 @@ namespace GallaryStore.Controllers
 
                 try
                 {
-                    orderService.Add(order);
-                    return Ok(order);
+                    string userId = User.Claims.FirstOrDefault(c => c.Type == "userId").Value; 
+                    OrderDTO order1= orderService.Add(order,userId);
+                    return Ok(order1);
                 }
                 catch (Exception ex)
                 {

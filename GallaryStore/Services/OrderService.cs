@@ -49,7 +49,7 @@ namespace GallaryStore.Services
             unit.Repository.delete(Order);
             unit.savechanges();
         }
-        public void Add(AddOrderDTO Order)
+        public OrderDTO Add(AddOrderDTO Order,string userId)
         {
 
             Order p = new Order()
@@ -59,20 +59,29 @@ namespace GallaryStore.Services
                 totalPrice = 0,
                 quantity = Order.quantity,
                 status = Order.status,
-                userId = Order.userId,
+                userId = userId,
                 
             };
             unit.Repository.add(p);
             unit.savechanges();
+            return new OrderDTO(p.id,p.checkOutDate,p.totalPrice,p.quantity, p.status, userId);
         }
 
         public CartDTO getCart(string userId )
         {
             
-           Order cart= unit.Repository.getElement(c => c.userId == userId && c.status == 'c', null);
-            List<getOrderProductsDTO> OrderProductsDTO = orderProductsService.GetById(cart.id, null);
-            CartDTO cartDTO= new CartDTO(cart.id,cart.checkOutDate,cart.totalPrice,cart.quantity,cart.status,cart.userId, OrderProductsDTO);
-            return cartDTO;
+           Order? cart= unit.Repository.getElement(c => c.userId == userId && c.status == 'c', null);
+            if( cart != null )
+            {
+                List<getOrderProductsDTO> OrderProductsDTO = orderProductsService.GetById(cart.id, null);
+                CartDTO cartDTO = new CartDTO(cart.id, cart.checkOutDate, cart.totalPrice, cart.quantity, cart.status, cart.userId, OrderProductsDTO);
+                return cartDTO;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
     }
 }
