@@ -1,4 +1,5 @@
 ﻿using GallaryStore.DTOs;
+using GallaryStore.DTOs.product;
 using GallaryStore.Models;
 using GallaryStore.UnitOfWork;
 
@@ -24,9 +25,9 @@ namespace GallaryStore.Services
             return new FavouriteDTO(p.userId,p.productId);
         }
 
-        public List< Favourite> GetByUserId(string userId, string include)
+        public List<ProductDTO> GetByUserId(string userId, string include)
         {
-            return unit.Repository.getElements(p => p.userId == userId, include);
+            return unit.Repository.getElements(p => p.userId == userId, include).Select(p => new ProductDTO(p.product.id, p.product.name, p.product.description, p.product.price, p.product.quantity, p.product.rate, p.product.img, p.product.categoryID)).ToList();
         }
 
         public void Update(FavouriteDTO Favourite)
