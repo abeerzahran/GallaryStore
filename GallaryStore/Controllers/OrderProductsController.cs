@@ -2,6 +2,7 @@
 using GallaryStore.DTOs.orderProducts;
 using GallaryStore.Models;
 using GallaryStore.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -107,8 +108,17 @@ namespace GallaryStore.Controllers
 
             }
             return BadRequest(ModelState);
-           
-            
+        }
+
+        [HttpGet("getproduct/{id}")]
+        [Authorize]
+        public ActionResult getproduct(int id)
+        {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            getOrderProductsDTO? product = OrderProductService.getProductInCart(id, userId);
+            if (product == null)
+                return Ok(null);
+            return Ok(product);
         }
     }
 }

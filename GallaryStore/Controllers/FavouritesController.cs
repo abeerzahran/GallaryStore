@@ -1,4 +1,5 @@
 ﻿using GallaryStore.DTOs;
+using GallaryStore.DTOs.favourite;
 using GallaryStore.DTOs.product;
 using GallaryStore.Models;
 using GallaryStore.Services;
@@ -93,13 +94,15 @@ namespace GallaryStore.Controllers
             
         }
         [HttpPost]
-        public ActionResult Add(FavouriteDTO Favourite)
+        [Authorize]
+        public ActionResult Add(addFavouriteProductDTO Favourite)
         {
             if(ModelState.IsValid)
             {
                 try
                 {
-                    FavouriteService.Add(Favourite);
+                    string userId = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+                    FavouriteService.Add(new FavouriteDTO(userId,Favourite.productId));
                     return Ok(Favourite);
                 }
                 catch(Exception ex)
@@ -111,15 +114,17 @@ namespace GallaryStore.Controllers
             return BadRequest(ModelState);
         }
         [HttpDelete]
-        public ActionResult Delete(FavouriteDTO favourite)
+        [Authorize]
+        public ActionResult Delete(addFavouriteProductDTO favourite)
         {
             if(ModelState.IsValid)
             {
+                string userId = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
 
-                FavouriteDTO? Favourite = FavouriteService.GetById(favourite.productId, favourite.userId, null);
+                FavouriteDTO? Favourite = FavouriteService.GetById(favourite.productId, userId, null);
                 if (Favourite != null)
                 {
-                    FavouriteService.Delete(favourite);
+                    FavouriteService.Delete(new FavouriteDTO(userId,favourite.productId));
                     return Ok(Favourite);
                 }
                 

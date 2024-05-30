@@ -11,10 +11,12 @@ namespace GallaryStore.Services
     {
         public unitOfWork<OrderProducts> unit;
         public unitOfWork<Product> unitProduct;
-        public OrderProductsService(unitOfWork<OrderProducts> unit, unitOfWork<Product> unitProduct)
+        public unitOfWork<Order> unitOrder;
+        public OrderProductsService(unitOfWork<OrderProducts> unit, unitOfWork<Product> unitProduct, unitOfWork<Order> unitOrder)
         {
             this.unit = unit;
             this.unitProduct = unitProduct;
+            this.unitOrder = unitOrder;
         }
 
         public List<getOrderProductsDTO> GetAll()
@@ -69,6 +71,18 @@ namespace GallaryStore.Services
             };
             unit.Repository.add(p);
             unit.savechanges();
+        }
+
+        public getOrderProductsDTO? getProductInCart(int productId, string userId)
+        {
+            Order? cart = unitOrder.Repository.getElement(c => c.userId == userId && c.status == 'c', null);
+            OrderProducts? orderProduct= unit.Repository.getElement(p=>p.orderId== cart.id&& p.productId==productId, null);
+            if(orderProduct == null || cart==null)
+            {
+                return null;
+            }
+            return new getOrderProductsDTO(orderProduct.orderId, orderProduct.productId, orderProduct.quantity, orderProduct.subtotal);
+
         }
     }
 }

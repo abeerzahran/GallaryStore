@@ -190,7 +190,7 @@ namespace GallaryStore.Controllers
         public async Task<ActionResult> getloginedUser()
         {
             var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
-            return Ok(id);
+            return Ok(new { userId = id });
         }
 
         
