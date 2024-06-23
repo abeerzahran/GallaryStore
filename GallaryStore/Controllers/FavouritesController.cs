@@ -32,14 +32,16 @@ namespace GallaryStore.Controllers
             }
         }
         [HttpGet]
-        [Route("getById")]
-        public ActionResult getById(string userId,int productId)
+        [Route("getById/{id}")]
+        [Authorize]
+        public ActionResult getById(int id)
         {
-            if (productId == null)
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            if (id == null)
             {
                 return BadRequest();
             }
-            FavouriteDTO? Favourite = FavouriteService.GetById( productId,userId,null);
+            FavouriteDTO? Favourite = FavouriteService.GetById( id,userId,null);
             if (Favourite != null)
             {
                 return Ok(Favourite);

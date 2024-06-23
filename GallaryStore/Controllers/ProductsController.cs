@@ -16,7 +16,7 @@ namespace GallaryStore.Controllers
             productService = service;
         }
         [HttpGet]
-        
+
         public ActionResult getAll()
         {
             List<ProductDTO>? products = productService.GetAll();
@@ -31,14 +31,14 @@ namespace GallaryStore.Controllers
             }
         }
         [HttpGet("{id}")]
-        public ActionResult getById(int id) 
+        public ActionResult getById(int id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return BadRequest();
             }
             ProductDTO? product = productService.GetById(id);
-            if(product != null)
+            if (product != null)
             {
                 return Ok(product);
             }
@@ -49,11 +49,11 @@ namespace GallaryStore.Controllers
 
         }
         [HttpPut("{id}")]
-        public ActionResult Update(int id,ProductDTO product)
+        public ActionResult Update(int id, ProductDTO product)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if (id == null ||  id == 0 || id != product.id)
+                if (id == null || id == 0 || id != product.id)
                 {
                     return BadRequest();
                 }
@@ -66,13 +66,13 @@ namespace GallaryStore.Controllers
                     }
                     catch (Exception ex)
                     {
-                        return BadRequest (ex.Message);
+                        return BadRequest(ex.Message);
                     }
                     return CreatedAtAction("getById", new { id = product.id }, product);
                 }
             }
             return BadRequest(ModelState);
-            
+
         }
         [HttpPost]
         public ActionResult Add(AddProductDTO product)
@@ -90,12 +90,12 @@ namespace GallaryStore.Controllers
                 return Ok(product);
             }
             return BadRequest(ModelState);
-            
+
         }
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            if(id==null)
+            if (id == null)
             {
                 return BadRequest("id is requred");
             }
@@ -106,23 +106,23 @@ namespace GallaryStore.Controllers
                 {
                     productService.Delete(id);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return BadRequest(ex.Message);
                 }
                 return Ok(product);
             }
             return NotFound();
-            
+
         }
 
         [HttpGet]
-        [Route("productPage")]
-        public ActionResult Get([FromQuery] string searchTerm = "", [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        [Route("productPage/{page}/{categoryName}")]
+        public ActionResult Get( string searchTerm = "",  int page = 1, int pageSize = 6, string categoryName="all")
         {
             try
             {
-                List<ProductDTO> productsDTO = productService.getProductPage(searchTerm, page, pageSize);
+                List<ProductDTO> productsDTO = productService.getProductPage(searchTerm, page, pageSize, categoryName);
                 return Ok(productsDTO);
             }
             catch(Exception ex)

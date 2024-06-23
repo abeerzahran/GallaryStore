@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualBasic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Numerics;
 using System.Runtime.InteropServices.JavaScript;
 using System.Security.Claims;
 using System.Text;
@@ -186,11 +188,27 @@ namespace GallaryStore.Controllers
             return BadRequest(ModelState);
         }
         [HttpGet("getLoggedinUser")]
-        [Authorize]
         public async Task<ActionResult> getloginedUser()
         {
-            var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
-            return Ok(new { userId = id });
+            
+            if(User.Identity.IsAuthenticated)
+            {
+                var id = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+                var rols = await userManager.GetRolesAsync(await userManager.FindByIdAsync(id));
+
+                return Ok(new
+                {
+                    id = id,
+                    name = User.Claims.FirstOrDefault(c => c.Type == "userName").Value,
+                    email = User.Claims.Skip(3).Take(1).FirstOrDefault().Value,
+                    password = User.Claims.FirstOrDefault(c => c.Type == "password").Value,
+                    phone = User.Claims.FirstOrDefault(c => c.Type == "phone").Value,
+                    address = User.Claims.FirstOrDefault(c => c.Type == "address").Value,
+                    roles = rols
+                });
+            }
+            return Ok(User.Identity.IsAuthenticated);
+            
         }
 
         

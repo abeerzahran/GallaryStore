@@ -20,8 +20,9 @@ namespace GallaryStore.Services
         public FavouriteDTO GetById(int prodId, string userId,string include)
         {
 
-            Favourite p = unit.Repository.getElement(p=>p.productId==prodId && p.userId==userId,include);
-  
+            Favourite? p = unit.Repository.getElement(p=>p.productId==prodId && p.userId==userId,include);
+            if (p == null)
+                return null;
             return new FavouriteDTO(p.userId,p.productId);
         }
 

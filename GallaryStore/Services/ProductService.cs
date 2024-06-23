@@ -65,9 +65,9 @@ namespace GallaryStore.Services
             unit.savechanges();
         }
 
-        public List<ProductDTO> getProductPage(string searchTerm,int pageNum  ,int pageSize)
+        public List<ProductDTO> getProductPage(string searchTerm,int pageNum  ,int pageSize, string categoryName)
         {
-            var products = unit.Repository.getElements(p => p.name == null ? " ".Contains(searchTerm) : p.name.Contains(searchTerm),null).ToList();
+            var products = unit.Repository.getElements(p => p.name == null ? " ".Contains(searchTerm) : p.name.Contains(searchTerm) && categoryName != "all"? p.category.name== categoryName : true ,"category").ToList();
             List<ProductDTO> productsDTO = new List<ProductDTO>();
             foreach (var product in products)
             {
